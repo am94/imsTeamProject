@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -79,7 +81,6 @@ public class ManagementDAO {
 		Set<Client> results = new HashSet<Client>(query.list());
 		log.info("Return All Clients results");
 		return results;
-		
 	}
 	
 /*	public void updateClient(Client obj)
@@ -110,17 +111,17 @@ public class ManagementDAO {
 		return results;
 	}
 	
-	public Set<Order> getClientInvoices(int clientId){
+	public Set<Invoice> getClientInvoices(String clientName){
 		log.info("Query DB for Invoices, based on Client Id");
 		String hql ="FROM Order WHERE CLIENT_ID =:param";
 		
 		Query query = session.createQuery(hql);
-		query.setParameter("param", clientId);
+		query.setParameter("param", clientName);
 		
 		@SuppressWarnings("unchecked")
-		Set<Order> clientOrders = new HashSet<Order>(query.list());
+		Set<Invoice> clientInvoices = new HashSet<Invoice>(query.list());
 		
-		return clientOrders;
+		return clientInvoices;
 	}
 	
 	///////////////// END INVOICE SECTION //////////////////////////
@@ -144,7 +145,8 @@ public class ManagementDAO {
 	}
 	
 	//Get clients
-	public Set<Client> getClients(int clientTypeId){
+	public Set<Client> getClients(int clientTypeId)
+	{
 		log.info("Query DB for List of Clients based on Client Type Id");
 		String clientType = "FROM com.revature.beans.Client WHERE CLIENT_TYPE = :param";
 		Query query = session.createQuery(clientType);

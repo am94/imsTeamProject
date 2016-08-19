@@ -113,13 +113,13 @@ public class DataLayerAccess
 		return invoices;
 	}
 	
-	public Set<Order> getClientInvoices(int clientId){
+	public Set<Invoice> getClientInvoices(String clientName){
 		log.info("Getting Orders based on Client Id");
 		
 		Transaction tx = session.beginTransaction();
 		
 		try{
-			Set<Order> orders = dao.getClientInvoices(clientId);
+			Set<Invoice> orders = dao.getClientInvoices(clientName);
 			tx.commit();
 			log.info("Orders grab successful");
 			return orders;
