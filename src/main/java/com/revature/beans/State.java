@@ -8,16 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.log4j.Logger;
-
 //THIS BEAN HOUSES STATE ABBREVIATIONS, NAME, AND IDs
 
 @Entity
 @Table(name="BEARDO_STATES")
 public class State 
 {
-	private static Logger log = Logger.getRootLogger();
-	
 	@Id
 	@Column(name="STATE_ID", nullable=false)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STATE_ID_GEN")
