@@ -243,8 +243,9 @@ public class DataLayerAccess
 		return clientType;
 	}
 	////// END ADDITIONS TO ADDING CLIENTS ///////
+}
 	
 
 	
 	
-}
+
