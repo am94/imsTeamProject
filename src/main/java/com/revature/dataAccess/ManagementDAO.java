@@ -58,20 +58,9 @@ public class ManagementDAO {
 	//BUT VIEWABLE IN HISTORY
 	//DEF SHOULD NOT BE HARDCODED
 	//NEED TO FIGURE OUT HOW TO PROGRAMATICALLY SET TYPE
-	public void deleteClient(Client obj)
-	{
-		/*log.info("Create 'Terminated' Client");
-		obj.setName(obj.getName() + " [TERMINATED]");	
-														
-		obj.setClientType(new ClientType(3, obj.getName()));  
-															 
-		Object mergedObj = session.merge(obj); 
-		session.saveOrUpdate(mergedObj);
-		log.info("'Terminated' Client saved into session");
-		return;*/
-		
-		session.delete(obj);
-		
+	public void deleteObject(Object obj)
+	{	
+		session.delete(obj);	
 	}
 	
 	public Set<Client> getAllClients(){

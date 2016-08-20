@@ -38,11 +38,11 @@ public class Client
     @JoinColumn(name="CLIENT_ADDRESS", nullable=false, unique=true)
 	private Address address;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="CLIENT_TYPE", nullable=false)
 	private ClientType clientType;  //OneToMany for Clients to Types
 
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	Set<Order> clientOrders = new HashSet<Order>();
 
 	public int getId()

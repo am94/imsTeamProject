@@ -16,6 +16,24 @@ public class Test {
 
 	public static void main(String[] args) throws FileNotFoundException 
 	{
+		//Create new Client
+		  int cType = 1; 
+		  State state = new State();
+		  DataLayerAccess dla = new DataLayerAccess();
+		  
+		  String stateName ="Virginia";
+		  
+		  state = dla.getState(stateName);
+		  
+		  Address address = new Address(50, "305 FairView Lane", "Suite# 302", "Minot", state, "58701");
+		  
+		  dla.createObject(address);
+		  
+		  ClientType clientType = dla.getClientType(cType);
+		  
+		  Client object = new Client(1, "Tom Dillinger", "tdill@gmail.com", "Martha Smith", "(555)555-5689", "(555)555-4587", address, clientType);
+		  
+		  dla.createObject(object);
 		
 	}
 	
@@ -25,21 +43,23 @@ public class Test {
 	
 	///Adding States///
 	
-//	File file = new File("clientType.txt");
-//	Scanner in = new Scanner(file);
+//	File file1 = new File("states.txt");
+//	File file2 = new File("statesAbbr.txt");
 //	
-//	ClientType object = new ClientType();
+//	Scanner in1 = new Scanner(file1);
+//	Scanner in2 = new Scanner(file2);
+//	
+//	State object = new State();
 //	DataLayerAccess dla = new DataLayerAccess();
 //	
 //	int counter = 1;
-//	while(in.hasNext())
-//	{
+//	while(in1.hasNext()){
 //		object.setId(counter);
-//		object.setClientList(in.nextLine());
+//		object.setName(in1.nextLine());
+//		object.setInitials(in2.nextLine());
 //		dla.createObject(object);
 //		counter++;
 //	}
-	
 	
 	///ADD CLIENT TYPES///
 //	File file = new File("clientType.txt");

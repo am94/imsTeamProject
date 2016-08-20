@@ -27,7 +27,7 @@ public class Address
 	@Column(name="ADDRESS_ZIP", nullable=false)
 	private String zip;
 	
-	@ManyToOne  //MANY ADDRESS, ONE STATE...
+	@ManyToOne(cascade=CascadeType.ALL)  //MANY ADDRESS, ONE STATE...
 	@JoinColumn(name="STATE_ID", nullable=false)  //NEED TO VERIFY THAT THIS IS CORRECT!!!!!
 	private State state;
 	

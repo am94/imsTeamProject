@@ -28,7 +28,7 @@ public class Order
 	@Column(name="ORDER_TOTAL", nullable=false)
 	private double total;
 	
-	@ManyToOne//>>REALLY NOT SURE ABOUT THIS ONE...ORDERS SHOULD BE 1-1 FOR CLIENTS, RIGHT???<<
+	@ManyToOne(cascade=CascadeType.ALL)//>>REALLY NOT SURE ABOUT THIS ONE...ORDERS SHOULD BE 1-1 FOR CLIENTS, RIGHT???<<
 	@JoinColumn(name="CLIENT_ID", nullable=false)
 	private Client client;
 	

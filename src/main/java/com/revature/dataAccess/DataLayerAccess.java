@@ -77,7 +77,7 @@ public class DataLayerAccess
 		
 		try{
 			
-			dao.deleteClient(obj);
+			dao.deleteObject(obj);
 			tx.commit();
 			log.info("Client 'termination' successful");
 			return true;
