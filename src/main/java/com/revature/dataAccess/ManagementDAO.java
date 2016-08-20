@@ -21,13 +21,14 @@ import com.revature.beans.Product;
 import com.revature.beans.State;
 
 
-public class ManagementDAO {
-
+public class ManagementDAO 
+{
 	private Session session;
 	private static Logger log = Logger.getRootLogger();
 	
 	
-	public ManagementDAO(Session session) {
+	public ManagementDAO(Session session) 
+	{
 		log.info("Create Session");
 		this.session = session;
 	}
@@ -70,11 +71,12 @@ public class ManagementDAO {
 		log.info("'Terminated' Client saved into session");
 		return;*/
 		
-		session.delete(obj);
+		session.delete(obj);  //BTW.  I *THINK* THE OBJ MUST BE PERSISTED
 		
 	}
 	
-	public Set<Client> getAllClients(){
+	public Set<Client> getAllClients()
+	{
 		log.info("Query DB for All Clients");
 		/*String hql = "FROM Client";
 		
@@ -85,7 +87,6 @@ public class ManagementDAO {
 							//Hopefully this works
 							//AddOrder might not work
 		
-		@SuppressWarnings("unchecked")
 		Set<Client> results = (Set<Client>) criteria.list();
 		
 		/*@SuppressWarnings("unchecked")
@@ -100,7 +101,7 @@ public class ManagementDAO {
 		Client results = null;
 		
 		Criteria criteria = session.createCriteria(Client.class).add(Restrictions.eq("name", name));
-		@SuppressWarnings("unchecked")
+
 		List<Client> clientInfo = criteria.list();
 
 		/*String hql = "FROM Client";
@@ -139,7 +140,6 @@ public class ManagementDAO {
 		
 		Query query =  session.createQuery(hql);
 		
-		@SuppressWarnings("unchecked")
 		Set<Invoice> results = new HashSet<Invoice>(query.list());
 		log.info("Return All Invoices");
 		return results;
@@ -153,12 +153,26 @@ public class ManagementDAO {
 		Query query = session.createQuery(hql);
 		query.setParameter("param", clientName);
 		
-		@SuppressWarnings("unchecked")
 		Set<Invoice> clientInvoices = new HashSet<Invoice>(query.list());
 		
 		return clientInvoices;
 	}
-	
+
+	public void deleteInvoice(Invoice obj)
+	{
+		/*log.info("Create 'Terminated' Client");
+		obj.setName(obj.getName() + " [TERMINATED]");	
+														
+		obj.setClientType(new ClientType(3, obj.getName()));  
+															 
+		Object mergedObj = session.merge(obj); 
+		session.saveOrUpdate(mergedObj);
+		log.info("'Terminated' Client saved into session");
+		return;*/
+		
+		session.delete(obj);  //BTW.  I *THINK* THE OBJ MUST BE PERSISTED
+		
+	}
 	///////////////// END INVOICE SECTION //////////////////////////
 	
 	///////////////////////////////// END GENERATE REPORTS ////////////////////////////////////////
@@ -174,7 +188,6 @@ public class ManagementDAO {
 		String clientTypeQuery = "FROM com.revature.beans.ClientType";
 		Query query = session.createQuery(clientTypeQuery);
 		
-		@SuppressWarnings("unchecked")
 		Set<ClientType> type = new HashSet<ClientType>(query.list());
 		log.info("Return result list of Client Type");
 		return type;
@@ -188,7 +201,6 @@ public class ManagementDAO {
 		Query query = session.createQuery(clientType);
 		query.setInteger("param", clientTypeId);
 	
-		@SuppressWarnings("unchecked")
 		Set<Client> clients = new HashSet<Client>(query.list());
 		
 		log.info("Return result for List of Clients based on Client Type Id");
@@ -202,7 +214,6 @@ public class ManagementDAO {
 		String productQuery = "FROM com.revature.beans.Product";
 		Query query = session.createQuery(productQuery);
 		
-		@SuppressWarnings("unchecked")
 		Set<Product> products = new HashSet<Product>(query.list());
 		log.info("Result for List of Products");
 		return products;
@@ -246,7 +257,7 @@ public class ManagementDAO {
 		String hql = "FROM CategoryDescription WHERE description =:description";
 		Query query = session.createQuery(hql);
 		query.setParameter("description", categoryChoice);
-		@SuppressWarnings("unchecked")
+
 		Set<CategoryDescription> catDesc = new HashSet<CategoryDescription>(query.list());
 		log.info("Return List result of Category Description based on categoryChoice");
 		return catDesc;
@@ -269,11 +280,27 @@ public class ManagementDAO {
 	
 	public void deleteProduct(Product obj) 
 	{
-		log.info("Create 'Deleted' Product");
+		/*log.info("Create 'Deleted' Product");
 		obj.setName(obj.getName() +" [REDACTED]");		 
 		Object mergedObj = session.merge(obj); 
 		session.saveOrUpdate(mergedObj);
-		log.info("'Deleted' Product saved into session");
+		log.info("'Deleted' Product saved into session");*/
+		
+		session.delete(obj);  //BTW.  I *THINK* THE OBJ MUST BE PERSISTED
+	}
+	
+	public Set<Product> getClientProds(int clientId)
+	{
+		Criteria criteria = session.createCriteria(Invoice.class)
+							.createAlias("Invoice.prodId", "prodId")
+							.createAlias("Invoice.orderId", "orderId")
+							.createAlias("Order.clientId", "clientId")
+							.add(Restrictions.idEq(clientId));  //"Basically" query for select all products where owning client restriction
+																//"Basically" a quadruple join that may or may not work.  Pls help ;_;
+		
+		Set<Product> results = new HashSet<Product>(criteria.list());
+		
+		return results;
 	}
 	
 	//////////////////////// END DELETE PRODUCT ///////////////////////////////////////

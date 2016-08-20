@@ -9,7 +9,8 @@ import com.revature.beans.ClientType;
 import com.revature.beans.State;
 import com.revature.dataAccess.DataLayerAccess;
 
-public class Test {
+public class Test 
+{
 
 	//private static Logger log = Logger.getRootLogger();
 	

@@ -1,6 +1,7 @@
 package com.revature.dataAccess;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -133,7 +134,7 @@ public class DataLayerAccess
 	
 	/////////////////// END INVOICE SECTION ///////////////////////
 	
-	////////////////// BEGIN DELETING PRODUCT ///////////////////////
+	////////////////// BEGIN PRODUCT ///////////////////////
 	public void deleteProduct(Product product) {
 		log.info("'Terminating' client");
 		Transaction tx = session.beginTransaction();
@@ -150,7 +151,14 @@ public class DataLayerAccess
 		
 	}
 	
-	///////////////// END DELETING PRODUCT //////////////////////////
+	public List<Product> getProdsByClient(int clientId)
+	{
+		List<Product> results = (List<Product>) new ManagementDAO().getClientProds(clientId);
+		
+		return results;
+	}
+	
+	///////////////// END PRODUCT //////////////////////////
 	
 	
 ////////////////// BEGIN INCOMING AND OUTGOING SECTION //////////////////	
