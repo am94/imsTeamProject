@@ -243,6 +243,47 @@ public class DataLayerAccess
 		return clientType;
 	}
 	////// END ADDITIONS TO ADDING CLIENTS ///////
+	public Client getClient(String clientName) {
+		Client client = dao.getClient(clientName);
+		return client;
+	}
+	
+	
+	
+	
+	
+	public void deleteClient(Client client) {
+		log.info("deleting client");
+		Transaction tx = session.beginTransaction();
+		
+		try{
+			dao.deleteObject(client);
+			tx.commit();
+			log.info("Client deleted");
+		}catch(Throwable t){
+			tx.rollback();
+			log.error("Client not deleted");
+		}
+	}
+	public void deleteAddress(Address address) {
+		log.info("deleting client's address");
+		Transaction tx = session.beginTransaction();
+		
+		try{
+			dao.deleteAddress(address);
+			tx.commit();
+			log.info("Address deleted");
+		}catch(Throwable t){
+			tx.rollback();
+			log.error("Address not deleted");
+		}
+		
+	}
+	public Address getAddressById(int adId) {
+		Address address = dao.getAddressById(adId);
+		return null;
+	}
+	
 }
 	
 

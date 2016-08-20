@@ -16,24 +16,14 @@ public class Test {
 
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		//Create new Client
-		  int cType = 1; 
-		  State state = new State();
-		  DataLayerAccess dla = new DataLayerAccess();
-		  
-		  String stateName ="Virginia";
-		  
-		  state = dla.getState(stateName);
-		  
-		  Address address = new Address(50, "305 FairView Lane", "Suite# 302", "Minot", state, "58701");
-		  
-		  dla.createObject(address);
-		  
-		  ClientType clientType = dla.getClientType(cType);
-		  
-		  Client object = new Client(1, "Tom Dillinger", "tdill@gmail.com", "Martha Smith", "(555)555-5689", "(555)555-4587", address, clientType);
-		  
-		  dla.createObject(object);
+		
+		//Delete free-floating address
+		
+		int adId = 3;
+		DataLayerAccess dla = new DataLayerAccess();
+		Address address = dla.getAddressById(adId);
+		
+		dla.deleteAddress(address);
 		
 	}
 	
@@ -221,4 +211,20 @@ public class Test {
 //	dla.createObject(categoryDescription);
 //	
 //	//////////////////////// END PRODUCT ADDITION /////////////////////////////////
+
+//	//Delete client
+//	
+//	//going to set up the delete manually for now.
+//	String clientName = "Tom Dillinger";
+//	DataLayerAccess dla = new DataLayerAccess();
+//	Client client = dla.getClient(clientName);
+//	
+//	System.out.println(client);
+//	System.out.println(client.getAddress());
+//	
+//
+//	dla.deleteAddress(client.getAddress());
+//	dla.deleteClient(client);
+
+
 }

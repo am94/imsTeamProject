@@ -34,7 +34,7 @@ public class Client
 	@Column(name="CLIENT_FAX", nullable=false)
 	private String fax;
  
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name="CLIENT_ADDRESS", nullable=false, unique=true)
 	private Address address;
 
@@ -42,7 +42,7 @@ public class Client
 	@JoinColumn(name="CLIENT_TYPE", nullable=false)
 	private ClientType clientType;  //OneToMany for Clients to Types
 
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	Set<Order> clientOrders = new HashSet<Order>();
 
 	public int getId()

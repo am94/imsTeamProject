@@ -306,6 +306,23 @@ public class ManagementDAO {
 	}
 ///////////////////////// END ADD CLIENT SECTION ///////////////////////////////////////
 
+	public Address getAddressById(int adId) {
+		String hql ="FROM Address WHERE id =:id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", adId);
+		
+		Address address = (Address) query.uniqueResult();
+		
+		return address;
+	}
+
+	public void deleteAddress(Address address) {
+		Address addy = (Address) session.load(Address.class, address.getId());
+		
+		session.delete(addy);
+		
+	}
+
 	
 
 	
