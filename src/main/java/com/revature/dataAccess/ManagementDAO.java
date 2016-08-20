@@ -2,13 +2,14 @@ package com.revature.dataAccess;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.revature.beans.Address;
 import com.revature.beans.CategoryDescription;
@@ -59,7 +60,7 @@ public class ManagementDAO {
 	//NEED TO FIGURE OUT HOW TO PROGRAMATICALLY SET TYPE
 	public void deleteClient(Client obj)
 	{
-		log.info("Create 'Terminated' Client");
+		/*log.info("Create 'Terminated' Client");
 		obj.setName(obj.getName() + " [TERMINATED]");	
 														
 		obj.setClientType(new ClientType(3, obj.getName()));  
@@ -67,19 +68,52 @@ public class ManagementDAO {
 		Object mergedObj = session.merge(obj); 
 		session.saveOrUpdate(mergedObj);
 		log.info("'Terminated' Client saved into session");
-		return;
+		return;*/
+		
+		session.delete(obj);
+		
 	}
 	
 	public Set<Client> getAllClients(){
 		log.info("Query DB for All Clients");
-		String hql = "FROM Client";
+		/*String hql = "FROM Client";
+		
+		Query query = session.createQuery(hql);*/
+
+		Criteria criteria = session.createCriteria(Client.class).createAlias("Client.id", "id")
+							.addOrder(org.hibernate.criterion.Order.asc("id"));
+							//Hopefully this works
+							//AddOrder might not work
+		
+		@SuppressWarnings("unchecked")
+		Set<Client> results = (Set<Client>) criteria.list();
+		
+		/*@SuppressWarnings("unchecked")
+		Set<Client> results = new HashSet<Client>(query.list());*/
+		
+		log.info("Return All Clients results");
+		return results;
+	}
+	
+	public Client getClient(String name)
+	{
+		Client results = null;
+		
+		Criteria criteria = session.createCriteria(Client.class).add(Restrictions.eq("name", name));
+		@SuppressWarnings("unchecked")
+		List<Client> clientInfo = criteria.list();
+
+		/*String hql = "FROM Client";
 		
 		Query query = session.createQuery(hql);
 		
-		
 		@SuppressWarnings("unchecked")
-		Set<Client> results = new HashSet<Client>(query.list());
-		log.info("Return All Clients results");
+		List<Client> clientInfo = query.list();*/
+		
+		results = clientInfo.get(0);
+		
+		log.info("Return All Clients results");		
+		
 		return results;
 	}
 	
@@ -111,7 +145,8 @@ public class ManagementDAO {
 		return results;
 	}
 	
-	public Set<Invoice> getClientInvoices(String clientName){
+	public Set<Invoice> getClientInvoices(String clientName)
+	{
 		log.info("Query DB for Invoices, based on Client Id");
 		String hql ="FROM Order WHERE CLIENT_ID =:param";
 		
@@ -133,7 +168,8 @@ public class ManagementDAO {
 	/////////////////////// BEGIN INCOMING AND OUTGOING SECTION ////////////////////////
 	
 	//Get client type
-	public Set<ClientType> getTypes() {
+	public Set<ClientType> getTypes() 
+	{
 		log.info("Query DB for List of Client Type");
 		String clientTypeQuery = "FROM com.revature.beans.ClientType";
 		Query query = session.createQuery(clientTypeQuery);
@@ -160,7 +196,8 @@ public class ManagementDAO {
 	}
 
 	//Get products
-	public Set<Product> getAllProducts() {
+	public Set<Product> getAllProducts()
+	{
 		log.info("Query DB for List of Products");
 		String productQuery = "FROM com.revature.beans.Product";
 		Query query = session.createQuery(productQuery);
@@ -172,7 +209,8 @@ public class ManagementDAO {
 	}
 
 	//Update stocks
-	public void changeStock(int amount, int productId) {
+	public void changeStock(int amount, int productId) 
+	{
 		log.info("Query DB to change the Stock amount based on Product ID");
 		String productQuery = "UPDATE BEARDO_PRODUCTS set quantity =:quantity "+
 				"WHERE id =:id";
@@ -186,7 +224,8 @@ public class ManagementDAO {
 	
 	//Get current order after creation --> needed because the ID changes AFTER going into the database, but before being
 	//stored into the DB
-	public Order getCurrentOrder(Date orderDate) {
+	public Order getCurrentOrder(Date orderDate) 
+	{
 		
 		log.info("Query DB get newly created Order based on Date");
 		String hql = "FROM Order WHERE date =:date";
@@ -201,7 +240,8 @@ public class ManagementDAO {
 	
 	///////////////////////// ADD NEW ITEMS/PRODUCTS ///////////////////////////////
 	
-	public Set<CategoryDescription> getCatChoice(String categoryChoice) {
+	public Set<CategoryDescription> getCatChoice(String categoryChoice) 
+	{
 		log.info("Query DB for List of Category Description based on categoryChoice");
 		String hql = "FROM CategoryDescription WHERE description =:description";
 		Query query = session.createQuery(hql);
@@ -212,7 +252,8 @@ public class ManagementDAO {
 		return catDesc;
 	}
 
-	public Product getNewProduct(String newItemName) {
+	public Product getNewProduct(String newItemName) 
+	{
 		log.info("Query DB for new product by the name");
 		String hql = "FROM Product WHERE name =:name";
 		Query query = session.createQuery(hql);
@@ -226,7 +267,8 @@ public class ManagementDAO {
 	
 	//////////////////////// BEGIN DELETE PRODUCT //////////////////////////////////////
 	
-	public void deleteProduct(Product obj) {
+	public void deleteProduct(Product obj) 
+	{
 		log.info("Create 'Deleted' Product");
 		obj.setName(obj.getName() +" [REDACTED]");		 
 		Object mergedObj = session.merge(obj); 
@@ -239,7 +281,8 @@ public class ManagementDAO {
 	///////////////////////// ADD CLIENT SECTION ///////////////////////////////////////
 	
 	///These have re-useablility for later///
-	public State getState(String stateName) {
+	public State getState(String stateName) 
+	{
 		log.info("Query DB for State object based on state name");
 		String theState = "FROM State WHERE name =:param";
 		Query query = session.createQuery(theState);
@@ -249,7 +292,8 @@ public class ManagementDAO {
 		return state;
 	}
 
-	public Address getAddress(State state) {
+	public Address getAddress(State state) 
+	{
 		log.info("Query DB for Address based on state Id");
 		String addy = "FROM Address WHERE STATE_ID =:state";
 		Query query = session.createQuery(addy);
